@@ -17,17 +17,20 @@ jobs:
 
       - name: Check required project files
         run: |
-          test -f Dockerfile
-          test -f requirements.txt
-          test -f app/index.html
-          test -f terraform/main.tf
-          test -f k8s/deployment.yaml
-          test -f k8s/monitoring.yaml
+          echo "Checking project files..."
+          test -f Dockerfile || { echo "Missing Dockerfile"; exit 1; }
+          test -f requirements.txt || { echo "Missing requirements.txt"; exit 1; }
+          test -f app/index.html || { echo "Missing app/index.html"; exit 1; }
+          test -f terraform/main.tf || { echo "Missing terraform/main.tf"; exit 1; }
+          test -f k8s/deployment.yaml || { echo "Missing k8s/deployment.yaml"; exit 1; }
+          test -f k8s/monitoring.yaml || { echo "Missing k8s/monitoring.yaml"; exit 1; }
+          echo "All required files found."
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
 
-           - name: Validate Terraform
-        run: |
-          terraform -chdir=terraform init -backend=false
-          terraform -chdir=terraform validate
+      - name: Initialize Terraform
+        run: terraform -chdir=terraform init -backend=false
+
+      - name: Validate Terraform
+        run: terraform -chdir=terraform validate
