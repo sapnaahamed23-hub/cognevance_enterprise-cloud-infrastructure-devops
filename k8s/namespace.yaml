@@ -1,0 +1,8 @@
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: enterprise-dev
+  labels:
+    project: enterprise-cloud-devops
+    environment: development
