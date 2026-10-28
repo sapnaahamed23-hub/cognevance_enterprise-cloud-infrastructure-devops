@@ -1,0 +1,42 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: enterprise-cloud-app
+  labels:
+    app: enterprise-cloud-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: enterprise-cloud-app
+  template:
+    metadata:
+      labels:
+        app: enterprise-cloud-app
+    spec:
+      containers:
+        - name: web
+          image: enterprise-cloud-devops:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "250m"
+              memory: "128Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: enterprise-cloud-service
+spec:
+  selector:
+    app: enterprise-cloud-app
+  ports:
+    - port: 80
+      targetPort: 8000
+  type: ClusterIP
