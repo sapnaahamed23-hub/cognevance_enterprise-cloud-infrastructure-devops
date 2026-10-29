@@ -1,0 +1,170 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"enterprise-cloud-app"},"name":"enterprise-cloud-app","namespace":"enterprise-dev"},"spec":{"replicas":2,"selector":{"matchLabels":{"app":"enterprise-cloud-app"}},"template":{"metadata":{"labels":{"app":"enterprise-cloud-app"}},"spec":{"containers":[{"image":"enterprise-cloud-devops:latest","imagePullPolicy":"IfNotPresent","name":"web","ports":[{"containerPort":8000}],"resources":{"limits":{"cpu":"250m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"64Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"runAsGroup":101,"runAsNonRoot":true,"runAsUser":100}}],"securityContext":{"seccompProfile":{"type":"RuntimeDefault"}}}}}}
+    creationTimestamp: "2026-10-28T17:02:09Z"
+    generation: 2
+    labels:
+      app: enterprise-cloud-app
+    name: enterprise-cloud-app
+    namespace: enterprise-dev
+    resourceVersion: "18579"
+    uid: aa256365-76bc-419a-b030-04746f576feb
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: enterprise-cloud-app
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        labels:
+          app: enterprise-cloud-app
+      spec:
+        containers:
+        - image: enterprise-cloud-devops:latest
+          imagePullPolicy: IfNotPresent
+          name: web
+          ports:
+          - containerPort: 8000
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 250m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsGroup: 101
+            runAsNonRoot: true
+            runAsUser: 100
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2026-10-28T17:02:09Z"
+      lastUpdateTime: "2026-10-29T13:42:26Z"
+      message: ReplicaSet "enterprise-cloud-app-6bcdbdf477" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2026-10-29T14:08:37Z"
+      lastUpdateTime: "2026-10-29T14:08:37Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 2
+    readyReplicas: 2
+    replicas: 2
+    terminatingReplicas: 0
+    updatedReplicas: 2
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"enterprise-cloud-service","namespace":"enterprise-dev"},"spec":{"ports":[{"port":80,"targetPort":8000}],"selector":{"app":"enterprise-cloud-app"},"type":"ClusterIP"}}
+    creationTimestamp: "2026-10-28T17:02:09Z"
+    name: enterprise-cloud-service
+    namespace: enterprise-dev
+    resourceVersion: "1048"
+    uid: 7466c73e-0338-4819-8cde-66fb09185189
+  spec:
+    clusterIP: 10.99.58.35
+    clusterIPs:
+    - 10.99.58.35
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8000
+    selector:
+      app: enterprise-cloud-app
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  data:
+    ca.crt: |
+      -----BEGIN CERTIFICATE-----
+      MIIDBjCCAe6gAwIBAgIBATANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwptaW5p
+      a3ViZUNBMB4XDTI2MTAyNzE2NDcyM1oXDTM2MTAyNTE2NDcyM1owFTETMBEGA1UE
+      AxMKbWluaWt1YmVDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPGg
+      A7cQuiumxvPbkWZ/Hsx4jOsyQOO5Yu7PCEqSvWRo2/CxcXrCN0Uxoksok+BCyYPa
+      jQQQ1HTa1NmTj9qqQBLLVKeWr7Sn6ejB/V/H49e8NmAagcGORDHYhe2hbDXj65XT
+      DOb8wgF03WYZNafm003GC2Sl3FtTefl/XzJOvX5kROa7Fi+mm8UHzzgrZpujjGEU
+      SNjxRXWhhWOMJJvjSUAB2KM9z+UK3oa3hqlaQ0eb3A0/tkYJPg6RULTADuzTvowC
+      v7BgCN2EGvtHe2l2fFJzordZmNoJeFB4C2RMAnDoR1L2KaAwnEcwBRbl5PH2odBG
+      qoq0A7aVCuEZiDY9oLUCAwEAAaNhMF8wDgYDVR0PAQH/BAQDAgKkMB0GA1UdJQQW
+      MBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQW
+      BBRztrERXqlhsiAOMtA4ADGrAJ+J3DANBgkqhkiG9w0BAQsFAAOCAQEA2JzFmBLa
+      0aJOQNgVhvT1uWLSSJse9UOXVGIekYxPejPiWguX7XK90lqYbjv/3Hp7l3GsRCD9
+      7zNNLEOazNYLN/5o9kVYq7nn2cpBtpl5hQ0tq4UEaD7oCldBfJax4K2+BRokMCh6
+      M+7zywsIlurEvzZoQt3tbMwmBdjvhevGrTLjmxuDyE6KH681Wz/0Q8QX8K8/Xxqq
+      qMWxQt54B66GP37Kwr1Q8IfnTJMu32wQKsTP7g6i5QETJojPJKQSnb2AU4YHM4pT
+      ZDyfCWiLy8vIKaW+8l7kmi28O3BKNHD9KFYDcp/YpXco9xccIofrL6yUfFBbK25f
+      Q1LoUBHCx0Uihg==
+      -----END CERTIFICATE-----
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubernetes.io/description: Contains a CA bundle that can be used to verify the
+        kube-apiserver when using internal endpoints such as the internal service
+        IP or kubernetes.default.svc. No other usage is guaranteed across distributions
+        of Kubernetes clusters.
+    creationTimestamp: "2026-10-28T17:01:41Z"
+    name: kube-root-ca.crt
+    namespace: enterprise-dev
+    resourceVersion: "1017"
+    uid: 6f4b57fe-2bc4-491e-8bdf-efe019cc3a5c
+- apiVersion: v1
+  data:
+    environment: development
+    infrastructure_type: Minikube
+    managed_by: Terraform
+    monitoring_enabled: "true"
+    project_name: enterprise-cloud-devops
+  immutable: false
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2026-10-29T14:13:15Z"
+    labels:
+      environment: development
+      managed-by: terraform
+      project: enterprise-cloud-devops
+    name: terraform-project-info
+    namespace: enterprise-dev
+    resourceVersion: "18912"
+    uid: 458dcceb-c10e-49a9-b57b-e749e27c4a19
+kind: List
+metadata:
+  resourceVersion: ""

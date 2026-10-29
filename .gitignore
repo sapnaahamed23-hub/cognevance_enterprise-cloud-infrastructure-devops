@@ -5,3 +5,9 @@
 *.tfplan
 crash.log
 crash.*.log
+
+# Terraform local state and working files
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
