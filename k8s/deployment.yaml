@@ -1,4 +1,3 @@
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,13 +14,24 @@ spec:
       labels:
         app: enterprise-cloud-app
     spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: web
           image: enterprise-cloud-devops:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
-                      livenessProbe:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 100
+            runAsGroup: 101
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
             httpGet:
               path: /
               port: 8000
