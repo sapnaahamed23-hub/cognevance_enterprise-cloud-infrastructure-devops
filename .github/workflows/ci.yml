@@ -33,3 +33,5 @@ jobs:
 
       - name: Validate Terraform
         run: terraform -chdir=terraform validate
+      - name: Build Docker image
+        run: docker build -t enterprise-cloud-devops:test .
