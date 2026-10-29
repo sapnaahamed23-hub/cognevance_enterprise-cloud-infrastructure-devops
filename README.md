@@ -8,11 +8,11 @@ This project demonstrates how an application can be containerized with Docker, d
 
 The project uses Minikube in GitHub Codespaces to simulate cloud-native infrastructure workflows without requiring paid cloud resources.
 
-**Environment:** Local Kubernetes lab
-**Deployment:** Minikube
-**Application replicas:** 2
-**CI:** GitHub Actions
-**Infrastructure automation:** Terraform with the Kubernetes provider
+- **Environment:** GitHub Codespaces
+- **Deployment:** Minikube
+- **Application replicas:** 2
+- **CI:** GitHub Actions
+- **Infrastructure automation:** Terraform with the Kubernetes provider
 
 ## Architecture
 
@@ -40,7 +40,7 @@ The project uses Minikube in GitHub Codespaces to simulate cloud-native infrastr
                      Grafana
 ```
 
-The Blackbox Exporter probes the application endpoint. Prometheus scrapes the exporter metrics, and Grafana queries Prometheus to visualize monitoring data.
+The Blackbox Exporter probes the application endpoint. Prometheus collects the exporter metrics, and Grafana queries Prometheus to visualize monitoring data.
 
 ## Technologies Used
 
@@ -48,7 +48,7 @@ The Blackbox Exporter probes the application endpoint. Prometheus scrapes the ex
 - **Kubernetes:** Application orchestration and deployment.
 - **Minikube:** Local Kubernetes cluster.
 - **Terraform:** Infrastructure configuration using the Kubernetes provider.
-- **GitHub Actions:** Automated Terraform validation and Docker image build.
+- **GitHub Actions:** Automated CI validation.
 - **Prometheus:** Metrics collection.
 - **Blackbox Exporter:** HTTP endpoint availability monitoring.
 - **Grafana:** Monitoring dashboards and visualization.
@@ -62,9 +62,10 @@ The Blackbox Exporter probes the application endpoint. Prometheus scrapes the ex
 - Separate application and monitoring namespaces.
 - Docker health check and non-root container execution.
 - Kubernetes resource requests and limits.
+- Liveness and readiness probes for the application.
 - Prometheus HTTP availability probing through Blackbox Exporter.
 - Grafana dashboard for monitoring metrics.
-- Terraform-managed Kubernetes ConfigMap.
+- Terraform-based Kubernetes ConfigMap management.
 - Kubernetes backup manifests and a recovery script.
 - GitHub Actions workflow for Terraform validation and Docker image building.
 - Free-first implementation designed to avoid unnecessary cloud charges.
@@ -98,9 +99,11 @@ The Blackbox Exporter probes the application endpoint. Prometheus scrapes the ex
 └── README.md
 ```
 
+*Note: The structure above highlights the main project files; additional files may exist in the repository.*
+
 ## Validation and Testing
 
-The following checks were performed in the local environment:
+The following checks were performed during project implementation:
 
 - Verified that the Minikube node reached the Ready state.
 - Confirmed that both application replicas were running and ready.
@@ -112,7 +115,7 @@ The following checks were performed in the local environment:
 - Ran Terraform validation and confirmed that a subsequent plan reported no changes.
 - Validated the Kubernetes backup and recovery manifests with dry-run checks.
 - Validated the recovery script syntax.
-- Confirmed that the GitHub Actions workflow successfully validated Terraform and built the Docker image.
+- Confirmed that the GitHub Actions workflow completed successfully for Terraform validation and Docker image building.
 
 The recovery procedure has been validated, but a complete recovery drill has not yet been performed.
 
@@ -135,23 +138,29 @@ The repository includes screenshots documenting the Kubernetes deployment and mo
 | `grafana-monitoring-dashboard.png` | Monitoring dashboard |
 | `grafana-probe-query.png` | Grafana probe metric query |
 
+*Ensure these filenames match the actual files in the `screenshots/` directory.*
+
 ## How to Run Locally
 
 ### Prerequisites
 
+Install or configure the following tools:
+
 - Docker
 - Minikube
 - kubectl
-- Terraform, for the IaC section
+- Terraform, for the Infrastructure as Code section
 
-### Start Minikube
+### 1. Start Minikube
 
 ```bash
 minikube start
 kubectl get nodes
 ```
 
-### Deploy the application
+Confirm that the Kubernetes node reaches the `Ready` state before continuing.
+
+### 2. Deploy the Application
 
 ```bash
 kubectl apply -f k8s/namespace.yaml
@@ -159,13 +168,19 @@ kubectl apply -f k8s/deployment.yaml
 kubectl get pods -n enterprise-dev
 ```
 
-### Configure monitoring
+Confirm that both application replicas become ready.
 
-Review `k8s/monitoring.yaml` and `prometheus.yml` before applying resources. Apply Kubernetes manifests according to their resource definitions; `prometheus.yml` is a Prometheus configuration file, not necessarily a Kubernetes manifest.
+### 3. Configure Monitoring
 
-### Validate Terraform
+Review `k8s/monitoring.yaml` and `prometheus.yml` before applying monitoring resources.
 
-From the repository root:
+Apply the Kubernetes manifests according to their resource definitions. The `prometheus.yml` file is a Prometheus configuration file, not a Kubernetes manifest by itself.
+
+Check the relevant pods and services to confirm that the monitoring components start successfully.
+
+### 4. Validate Terraform
+
+Run these commands from the repository root:
 
 ```bash
 terraform -chdir=terraform init
@@ -173,23 +188,25 @@ terraform -chdir=terraform validate
 terraform -chdir=terraform plan
 ```
 
-The Terraform provider requires access to a compatible Kubernetes cluster and a valid kubeconfig.
+The Terraform Kubernetes provider requires access to a compatible Kubernetes cluster and a valid kubeconfig.
 
-### Run the recovery procedure
+Review the plan before applying any infrastructure changes.
 
-From the repository root, after ensuring the intended cluster is active:
+### 5. Run the Recovery Procedure
+
+From the repository root, after ensuring that the intended cluster is active:
 
 ```bash
 bash scripts/restore-kubernetes-backup.sh
 ```
 
-**Warning:** The recovery script applies Kubernetes resources. Review the backup file and confirm the target cluster before running it.
+**Warning:** The recovery script applies Kubernetes resources. Review the backup files and confirm the target cluster before running it.
 
 ## Project Scope and Limitations
 
-This is an educational local Kubernetes project. It does not provision production infrastructure on AWS, Azure, or GCP.
+This is an educational local Kubernetes project. It does not provision production infrastructure on AWS, Azure, or Google Cloud.
 
-The GitHub Actions workflow validates Terraform and builds a Docker image; it does not yet publish the image to a registry or automatically deploy it to a cluster.
+The GitHub Actions workflow performs CI validation and Docker image building. It does not publish the image to a registry or automatically deploy the application to a Kubernetes cluster.
 
 The project does not claim production-scale availability, a completed disaster-recovery drill, or a production security audit.
 
@@ -205,7 +222,7 @@ The project does not claim production-scale availability, a completed disaster-r
 
 ## Author
 
-**Sapna Ahamed**
+**Sapna Ahamed**  
 B.E. Computer Science and Engineering | 2027 Graduate
 
 Interested in Cloud Engineering, DevOps, Kubernetes, and Infrastructure as Code.
