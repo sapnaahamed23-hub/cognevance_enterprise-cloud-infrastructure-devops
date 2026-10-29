@@ -1,0 +1,44 @@
+
+flowchart TB
+    GH["GitHub Repository"]
+    CI["GitHub Actions CI"]
+    TV["Terraform Init & Validate"]
+    DB["Docker Image Build"]
+
+    subgraph K8S["Minikube Kubernetes Cluster"]
+        SVC["ClusterIP Service"]
+        APP1["Application Replica 1"]
+        APP2["Application Replica 2"]
+        CM["Terraform-managed ConfigMap"]
+
+        SVC --> APP1
+        SVC --> APP2
+    end
+
+    subgraph MON["Monitoring Namespace"]
+        BB["Blackbox Exporter"]
+        PROM["Prometheus"]
+        GRAF["Grafana Dashboard"]
+        BB --> PROM
+        PROM --> GRAF
+    end
+
+    TF["Terraform Configuration"]
+    BACK["Kubernetes Backup Manifests"]
+    REC["Recovery Script"]
+
+    GH --> CI
+    CI --> TV
+    CI --> DB
+    DB -. "Image built; no automated deployment" .-> K8S
+    TF --> CM
+    SVC --> BB
+    BACK --> REC
+    REC -. "Manual recovery procedure" .-> K8S
+
+    classDef ci fill:#e8f0fe,stroke:#4776c5,color:#172b4d
+    classDef app fill:#e6f4ea,stroke:#34845a,color:#163b27
+    classDef monitor fill:#fff1dc,stroke:#c18128,color:#57380b
+    class GH,CI,TV,DB ci
+    class SVC,APP1,APP2,CM app
+    class BB,PROM,GRAF monitor
