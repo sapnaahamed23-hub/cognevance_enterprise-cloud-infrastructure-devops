@@ -4,7 +4,7 @@ A hands-on Cloud Computing and DevOps project demonstrating containerization, Ku
 
 ## Project Overview
 
-This project demonstrates how an application can be containerized with Docker, deployed to Kubernetes, and monitored using Prometheus, Blackbox Exporter, and Grafana.
+This project demonstrates how an application can be containerized using Docker, deployed to Kubernetes, and monitored using Prometheus, Blackbox Exporter, and Grafana.
 
 The project uses Minikube in GitHub Codespaces to simulate cloud-native infrastructure workflows without requiring paid cloud resources.
 
@@ -44,16 +44,18 @@ The Blackbox Exporter probes the application endpoint. Prometheus collects the e
 
 ## Technologies Used
 
-- **Docker:** Application containerization and image building.
-- **Kubernetes:** Application orchestration and deployment.
-- **Minikube:** Local Kubernetes cluster.
-- **Terraform:** Infrastructure configuration using the Kubernetes provider.
-- **GitHub Actions:** Automated CI validation.
-- **Prometheus:** Metrics collection.
-- **Blackbox Exporter:** HTTP endpoint availability monitoring.
-- **Grafana:** Monitoring dashboards and visualization.
-- **Git and GitHub:** Version control and source hosting.
-- **YAML and Bash:** Infrastructure manifests and recovery automation.
+| Technology | Purpose |
+|---|---|
+| Docker | Application containerization and image building |
+| Kubernetes | Application orchestration and deployment |
+| Minikube | Local Kubernetes cluster |
+| Terraform | Infrastructure configuration using the Kubernetes provider |
+| GitHub Actions | Automated CI validation |
+| Prometheus | Metrics collection |
+| Blackbox Exporter | HTTP endpoint availability monitoring |
+| Grafana | Monitoring dashboards and visualization |
+| Git and GitHub | Version control and source hosting |
+| YAML and Bash | Infrastructure manifests and recovery automation |
 
 ## Key Features
 
@@ -219,6 +221,11 @@ The project does not claim production-scale availability, a completed disaster-r
 - Expand automated application tests.
 - Perform and document an end-to-end recovery drill.
 - Improve secrets management and production security controls.
+
+## Project Links
+
+- **GitHub Repository:** https://github.com/sapnaahamed23-hub/cognevance_enterprise-cloud-infrastructure-devops
+- **Project Report:** Level_3_Enterprise_Cloud_Infrastructure_DevOps_Report.pdf
 
 ## Author
 
